@@ -1,7 +1,14 @@
 {
   // If you plan to output ESM, use `tsconfig.esm.json`
-  "extends": "@ombro/ts-config/tsconfig.cjs.json",
+  "extends": "@ombro/ts-config/tsconfig.esm.json",
   "compilerOptions": {
-    "composite": true
-  }
+    // "composite": true,
+    "baseUrl": ".",
+    "outDir": "dist",
+    "rootDir": ".",
+    "paths": {
+      "@cy-pg/vue-*": ["packages/*/src"]
+    }
+  },
+  "include": ["packages/global.d.ts", "packages/*/src", "packages/*/__tests__"]
 }
