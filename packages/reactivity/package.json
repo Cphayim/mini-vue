@@ -1,10 +1,9 @@
 {
-  "name": "@my/main",
+  "name": "@cy-pg/vue-reactivity",
   "version": "0.0.0",
-  "author": "unknown",
+  "author": "Cphayim <i@cphayim.me>",
   "description": "> TODO: description",
-  "license": "UNLICENSED",
-  "bin": {},
+  "license": "MIT",
   "main": "dist/index.js",
   "exports": "./dist/index.js",
   "typings": "dist/index.d.ts",
@@ -12,10 +11,8 @@
     "dist"
   ],
   "scripts": {
-    "dev": "tsc -b -w",
     "build": "tsc"
   },
-  "dependencies": {
-    "@my/shared": "0.0.0"
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }

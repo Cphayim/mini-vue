@@ -1,9 +1,9 @@
 {
-  "name": "@my/shared",
+  "name": "@cy-pg/vue-shared",
   "version": "0.0.0",
-  "author": "unknown",
+  "author": "Cphayim <i@cphayim.me>",
   "description": "> TODO: description",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "main": "dist/index.js",
   "exports": "./dist/index.js",
   "typings": "dist/index.d.ts",
