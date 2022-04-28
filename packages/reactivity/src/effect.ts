@@ -8,6 +8,7 @@ type KeyToDepMap = Map<any, Dep>
 const targetMap = new WeakMap<any, KeyToDepMap>()
 
 let activeEffect: ReactiveEffect | undefined
+let shouldTrack = false
 
 type EffectScheduler = (...args: any[]) => any
 
@@ -29,9 +30,11 @@ export class ReactiveEffect<T = any> {
       // 执行的时候给全局的 activeEffect 赋值
       // 当 fn() 中的响应式对象 get track 时能够获取到当前的 effect
       activeEffect = this
+      shouldTrack = true
       // 执行并进行依赖收集
       return this.fn()
     } finally {
+      shouldTrack = false
       // 重置 activeEffect
       activeEffect = undefined
     }
@@ -85,7 +88,7 @@ export function stop(runner: ReactiveEffectRunner) {
 
 // 跟踪：订阅
 export function track<T>(target: T, key: string | symbol) {
-  if (!activeEffect) return
+  if (!shouldTrack || !activeEffect) return
 
   let depsMap = targetMap.get(target)
   if (!depsMap) {
@@ -98,6 +101,8 @@ export function track<T>(target: T, key: string | symbol) {
     dep = new Set()
     depsMap.set(key, dep)
   }
+
+  if (dep.has(activeEffect)) return
 
   // 将当前的 effect 添加到订阅中
   dep.add(activeEffect)
