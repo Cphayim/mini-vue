@@ -1,11 +1,13 @@
-import { isObject } from '@cphayim/vue-shared'
+import { extend, isObject } from '@cphayim/vue-shared'
 import { track, trigger } from './effect'
 import { reactive, ReactiveFlags, readonly } from './reactive'
 
 const get = createGetter()
+const shallowGet = createGetter(false, true)
 const readonlyGet = createGetter(true)
+const shallowReadonlyGet = createGetter(true, true)
 
-function createGetter<T extends object>(isReadonly = false) {
+function createGetter<T extends object>(isReadonly = false, shallow = false) {
   return function (target: T, key: string | symbol, receiver: any) {
     // 处理 isReactive, isReadonly 函数访问的属性
     if (key === ReactiveFlags.IS_REACTIVE) {
@@ -19,6 +21,10 @@ function createGetter<T extends object>(isReadonly = false) {
     // 非 readonly 时收集依赖
     if (!isReadonly) {
       track(target, key)
+    }
+
+    if (shallow) {
+      return value
     }
 
     // 当 value 是 object 时，返回对应的响应式对象
@@ -53,3 +59,11 @@ export const readonlyHandlers: ProxyHandler<object> = {
     return true
   },
 }
+
+export const shallowReactiveHandlers: ProxyHandler<object> = extend({}, mutableHandlers, {
+  get: shallowGet,
+})
+
+export const shallowReadonlyHandlers: ProxyHandler<object> = extend({}, readonlyHandlers, {
+  get: shallowReadonlyGet,
+})
