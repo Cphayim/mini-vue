@@ -1,5 +1,6 @@
+import { isObject } from '@cphayim/vue-shared'
 import { track, trigger } from './effect'
-import { ReactiveFlags } from './reactive'
+import { reactive, ReactiveFlags, readonly } from './reactive'
 
 const get = createGetter()
 const readonlyGet = createGetter(true)
@@ -14,9 +15,17 @@ function createGetter<T extends object>(isReadonly = false) {
     }
 
     const value = Reflect.get(target, key, receiver)
+
+    // 非 readonly 时收集依赖
     if (!isReadonly) {
       track(target, key)
     }
+
+    // 当 value 是 object 时，返回对应的响应式对象
+    if (isObject(value)) {
+      return isReadonly ? readonly(value) : reactive(value)
+    }
+
     return value
   }
 }

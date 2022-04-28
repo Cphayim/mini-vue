@@ -11,12 +11,35 @@ describe('reactivity/readonly', () => {
     expect(observed.foo).toBe(1)
   })
 
+  it('nested readonly', () => {
+    const original = { nested: { foo: 1 }, array: [{ bar: 2 }] }
+    const observed = readonly(original)
+
+    expect(isReadonly(observed)).toBe(true)
+    expect(isReadonly(observed.nested)).toBe(true)
+    expect(isReadonly(observed.array)).toBe(true)
+    expect(isReadonly(observed.array[0])).toBe(true)
+  })
+
   it('should call console.warn when set', () => {
-    const warnSpy = vi.spyOn(console, 'warn')
-    const observed = readonly({ foo: 1 })
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => void 0)
+    const qux = Symbol('qux')
+    const observed = readonly({ foo: 1, [qux]: 3 })
+
     observed.foo++
-    expect(warnSpy).toBeCalled()
     expect(observed.foo).toBe(1)
+    expect(warnSpy).toBeCalledTimes(1)
+    expect(warnSpy.mock.lastCall?.[0]).toMatch(
+      'Set operation on key "foo" failed: target is readonly.',
+    )
+
+    observed[qux] = 4
+    expect(observed[qux]).toBe(3)
+    expect(warnSpy).toBeCalledTimes(2)
+    expect(warnSpy.mock.lastCall?.[0]).toMatch(
+      'Set operation on key "Symbol(qux)" failed: target is readonly.',
+    )
+
     vi.restoreAllMocks()
   })
 })
