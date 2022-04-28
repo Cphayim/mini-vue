@@ -1,20 +1,37 @@
-import { isObject } from '@cphayim/vue-shared'
-import { track, trigger } from './effect'
+import { mutableHandlers, readonlyHandlers } from './baseHandlers'
 
-export function reactive<T extends object>(raw: T) {
-  // 对于原始类型，直接返回 raw
-  if (!isObject(raw)) return raw
+export const enum ReactiveFlags {
+  IS_REACTIVE = '__v_isReactive',
+  IS_READONLY = '__v_isReadonly',
+}
 
-  return new Proxy(raw, {
-    get(target, key, receiver) {
-      const value = Reflect.get(target, key, receiver)
-      track(target, key)
-      return value
-    },
-    set(target, key, value, receiver) {
-      const result = Reflect.set(target, key, value, receiver)
-      trigger(target, key)
-      return result
-    },
-  })
+export interface Target {
+  [ReactiveFlags.IS_REACTIVE]: boolean
+  [ReactiveFlags.IS_READONLY]: boolean
+}
+
+/**
+ * 创建原始对象的响应式副本
+ */
+export function reactive<T extends object>(target: T) {
+  return createReactiveObject<T>(target, mutableHandlers)
+}
+
+/**
+ * 创建原始对象的只读副本
+ */
+export function readonly<T extends object>(target: T) {
+  return createReactiveObject<T>(target, readonlyHandlers)
+}
+
+function createReactiveObject<T extends object>(target: T, baseHandlers: ProxyHandler<T>) {
+  return new Proxy(target, baseHandlers)
+}
+
+export function isReactive(value: unknown): boolean {
+  return !!(value && (value as Target)[ReactiveFlags.IS_REACTIVE])
+}
+
+export function isReadonly(value: unknown): boolean {
+  return !!(value && (value as Target)[ReactiveFlags.IS_READONLY])
 }
