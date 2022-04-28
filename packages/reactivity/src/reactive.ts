@@ -1,4 +1,4 @@
-import { isObject } from '@cy-pg/vue-shared'
+import { isObject } from '@cphayim/vue-shared'
 import { track, trigger } from './effect'
 
 export function reactive<T extends object>(raw: T) {

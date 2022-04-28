@@ -6,7 +6,7 @@ export default defineConfig({
   resolve: {
     alias: [
       {
-        find: /^@cy-pg\/vue-(.*)$/,
+        find: /^@cphayim\/vue-(.*)$/,
         replacement: resolve(__dirname, 'packages/$1/src'),
       },
     ],

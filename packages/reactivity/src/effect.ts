@@ -1,4 +1,4 @@
-import { extend } from '@cy-pg/vue-shared'
+import { extend } from '@cphayim/vue-shared'
 import { Dep } from './dep'
 
 // {target -> key -> dep}

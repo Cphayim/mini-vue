@@ -7,7 +7,7 @@
     "outDir": "dist",
     "rootDir": ".",
     "paths": {
-      "@cy-pg/vue-*": ["packages/*/src"]
+      "@cphayim/vue-*": ["packages/*/src"]
     }
   },
   "include": ["packages/global.d.ts", "packages/*/src", "packages/*/__tests__"]

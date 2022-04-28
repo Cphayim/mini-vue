@@ -1,0 +1,17 @@
+{
+  "folders": [
+    {
+      "name": "✨ mini-vue-monorepo",
+      "path": "."
+    },
+    {
+      "name": "📦 @cphayim/vue-reactivity",
+      "path": "packages/reactivity"
+    },
+    {
+      "name": "📦 @cphayim/vue-shared",
+      "path": "packages/shared"
+    }
+  ],
+  "settings": {}
+}
