@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { isReadonly, readonly } from '../src/reactive'
+import { isProxy, isReadonly, readonly } from '../src/reactive'
 
 describe('reactivity/readonly', () => {
   it('object', () => {
@@ -8,6 +8,7 @@ describe('reactivity/readonly', () => {
 
     expect(observed).not.toBe(original)
     expect(isReadonly(observed)).toBe(true)
+    expect(isProxy(observed)).toBe(true)
     expect(observed.foo).toBe(1)
   })
 
