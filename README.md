@@ -19,7 +19,9 @@
 - [x] trigger 依赖触发
 - [x] shadowReactive, shadowReadonly
 - [x] isReactive, isReadonly, isProxy
+- [x] toReactive, toReadonly
 - [x] ref
-- [ ] isRef, unRef
-- [ ] proxyRefs
-- [ ] computed
+- [x] isRef, unRef
+- [x] proxyRefs
+- [x] toRef, toRefs
+- [x] computed
