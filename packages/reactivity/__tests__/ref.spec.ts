@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { effect } from '../src/effect'
-import { ref } from '../src/ref'
+import { reactive } from '../src/reactive'
+import { isRef, ref, unRef } from '../src/ref'
 
 describe('reactivity/ref', () => {
   it('should hold a value', () => {
@@ -47,5 +48,25 @@ describe('reactivity/ref', () => {
     // 相同的值不会 trigger
     a.value = raw
     expect(calls).toBe(2)
+  })
+
+  it('isRef', () => {
+    const a = ref(1)
+    const b = 2
+    const c = reactive({ foo: 3 })
+    expect(isRef(a)).toBe(true)
+    expect(isRef(b)).toBe(false)
+    expect(isRef(c)).toBe(false)
+  })
+
+  it('unRef', () => {
+    const a = ref(1)
+    const b = 2
+    const original = { foo: 1 }
+    const c = ref(original)
+    expect(unRef(a)).toBe(1)
+    expect(unRef(b)).toBe(2)
+    // equal reactive object
+    expect(unRef(c)).toBe(c.value)
   })
 })
