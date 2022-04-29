@@ -1,4 +1,6 @@
-import { hasChanged } from '@cphayim/vue-shared'
+import { hasChanged, isArray } from '@cphayim/vue-shared'
+import { IfAny } from 'packages/shared/src/typeUtils'
+import { isProxy } from 'util/types'
 import { createDep, Dep } from './dep'
 import { trackEffect, triggerEffect } from './effect'
 import { toReactive } from './reactive'
@@ -11,7 +13,7 @@ class RefImpl<T> {
   private _value: T
   private _rawValue: T
 
-  __v_isRef = true
+  public readonly __v_isRef = true
 
   // 每个 RefImpl 维护自己的 dep
   dep: Dep = createDep()
@@ -75,4 +77,43 @@ export function proxyRefs<T extends object>(objectWithRefs: T): ShallowUnWrapRef
       }
     },
   })
+}
+
+class ObjectRefImpl<T extends object, K extends keyof T> {
+  public readonly __v_isRef = true
+
+  constructor(private readonly _object: T, private readonly _key: K) {}
+
+  get value() {
+    return this._object[this._key]
+  }
+
+  set value(newValue: T[K]) {
+    this._object[this._key] = newValue
+  }
+}
+
+export type ToRef<T> = IfAny<T, Ref<T>, [T] extends [Ref] ? T : Ref<T>>
+
+export function toRef<T extends object, K extends keyof T>(obj: T, key: K): ToRef<T[K]> {
+  const value = obj[key]
+  return isRef(value) ? value : (new ObjectRefImpl(obj, key) as any)
+}
+
+export type ToRefs<T = any> = {
+  [K in keyof T]: ToRef<T[K]>
+}
+
+// 将一个响应式对象转为 refs 对象
+export function toRefs<T extends object>(obj: T): ToRefs<T> {
+  // 如果传入的 obj 不是一个响应式对象，发出 warning
+  if (!isProxy(obj)) {
+    console.warn(`toRefs() expects a reactive object but received a plain one.`)
+  }
+  const result: any = isArray(obj) ? new Array(obj.length) : {}
+  // 对每一个键值执行 toRef
+  for (const key in obj) {
+    result[key] = toRef(obj, key)
+  }
+  return result
 }

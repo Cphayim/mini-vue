@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { effect } from '../src/effect'
 import { reactive } from '../src/reactive'
-import { isRef, proxyRefs, ref, unRef } from '../src/ref'
+import { isRef, proxyRefs, ref, toRefs, unRef } from '../src/ref'
 
 describe('reactivity/ref', () => {
   it('should hold a value', () => {
@@ -94,5 +94,34 @@ describe('reactivity/ref', () => {
     // 当新值是一个 ref 时，使用新的 ref 替换旧的 ref
     expect(user.age.value).toBe(30)
     expect(user.age).toBe(nVal)
+  })
+
+  it('toRefs', () => {
+    const observed = reactive({ name: 'abc', age: 18 })
+    const { name, age } = toRefs(observed)
+
+    // 解构并保持响应
+    expect(name.value).toBe('abc')
+    expect(age.value).toBe(18)
+
+    observed.age = 19
+    expect(age.value).toBe(19)
+    age.value = 20
+    expect(observed.age).toBe(20)
+
+    // 传入非响应式对象将得到警告
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => void 0)
+    const plain = { name: 'def', age: 18 }
+    const { name: name2, age: age2 } = toRefs(plain)
+
+    expect(warnSpy).toBeCalled()
+    expect(warnSpy).toBeCalledWith(`toRefs() expects a reactive object but received a plain one.`)
+    expect(name2.value).toBe('def')
+    expect(age2.value).toBe(18)
+
+    plain.age = 19
+    expect(age2.value).toBe(19)
+    age2.value = 20
+    expect(plain.age).toBe(20)
   })
 })
