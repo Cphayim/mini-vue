@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { isProxy, isReadonly, readonly } from '../src/reactive'
+import { isProxy, isReadonly, readonly, toReadonly } from '../src/reactive'
 
 describe('reactivity/readonly', () => {
   it('object', () => {
@@ -40,5 +40,12 @@ describe('reactivity/readonly', () => {
     expect(warnSpy).toBeCalledWith('Set operation on key "Symbol(qux)" failed: target is readonly.')
 
     vi.restoreAllMocks()
+  })
+
+  it('toReadonly', () => {
+    const num = toReadonly(1)
+    const obj = toReadonly({ foo: 1 })
+    expect(isReadonly(num)).toBe(false)
+    expect(isReadonly(obj)).toBe(true)
   })
 })

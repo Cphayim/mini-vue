@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { isProxy, isReactive, reactive } from '../src/reactive'
+import { isProxy, isReactive, reactive, toReactive } from '../src/reactive'
 
 describe('reactivity/reactive', () => {
   it('object', () => {
@@ -24,5 +24,12 @@ describe('reactivity/reactive', () => {
     expect(isReactive(observed.nested)).toBe(true)
     expect(isReactive(observed.array)).toBe(true)
     expect(isReactive(observed.array[0])).toBe(true)
+  })
+
+  it('toReactive', () => {
+    const num = toReactive(1)
+    const obj = toReactive({ foo: 1 })
+    expect(isReactive(num)).toBe(false)
+    expect(isReactive(obj)).toBe(true)
   })
 })
