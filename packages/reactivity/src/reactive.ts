@@ -1,3 +1,4 @@
+import { isObject } from '@cphayim/vue-shared'
 import {
   mutableHandlers,
   readonlyHandlers,
@@ -45,4 +46,12 @@ export function isProxy(value: unknown): boolean {
 
 export function isReadonly(value: unknown): boolean {
   return !!(value && (value as Target)[ReactiveFlags.IS_READONLY])
+}
+
+export function toReactive<T>(value: T): T {
+  return isObject(value) ? reactive(value as Record<any, any>) : value
+}
+
+export function toReadonly<T>(value: T): T {
+  return isObject(value) ? readonly(value as Record<any, any>) : value
 }

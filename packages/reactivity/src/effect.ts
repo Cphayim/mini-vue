@@ -102,8 +102,13 @@ export function track<T>(target: T, key: string | symbol) {
     depsMap.set(key, dep)
   }
 
-  if (dep.has(activeEffect)) return
+  trackEffect(dep)
+}
 
+export function trackEffect(dep: Dep) {
+  if (!shouldTrack || !activeEffect) return
+
+  if (dep.has(activeEffect)) return
   // 将当前的 effect 添加到订阅中
   dep.add(activeEffect)
   // 反向添加 dep 到当前 effect 的 deps 中，方便 stop 时移除 effect
@@ -118,6 +123,10 @@ export function trigger<T>(target: T, key: string | symbol) {
   const dep = depsMap.get(key)
   if (!dep) return
 
+  triggerEffect(dep)
+}
+
+export function triggerEffect(dep: Dep) {
   // 执行所有订阅者的回调
   for (const effect of dep) {
     // 如果 effect 存在 scheduler，则执行 scheduler
