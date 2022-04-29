@@ -123,5 +123,6 @@ describe('reactivity/ref', () => {
     expect(age2.value).toBe(19)
     age2.value = 20
     expect(plain.age).toBe(20)
+    vi.restoreAllMocks()
   })
 })
