@@ -51,3 +51,28 @@ export function isRef<T>(r: any): r is Ref<T> {
 export function unRef<T>(r: T | Ref<T>): T {
   return isRef(r) ? r.value : r
 }
+
+type ShallowUnWrapRef<T> = {
+  [K in keyof T]: T[K] extends Ref<infer V> ? V : T[K]
+}
+
+export function proxyRefs<T extends object>(objectWithRefs: T): ShallowUnWrapRef<T> {
+  return new Proxy<any>(objectWithRefs, {
+    get(target, key, receiver) {
+      // 如果 target[key] 是一个 ref，取 target[key].value
+      return unRef(Reflect.get(target, key, receiver))
+    },
+    set(target, key, value, receiver) {
+      const oldValue = Reflect.get(target, key, receiver)
+      // 1. oldValue 是 ref，value 不是 ref，将 value 赋值给 oldValue.value
+      // 2. oldValue 是 ref，value 是 ref，使用 value 替换 oldValue
+      // 3. oldValue 不是 ref，使用 value 替换 oldValue
+      if (isRef(oldValue) && !isRef(value)) {
+        oldValue.value = value
+        return true
+      } else {
+        return Reflect.set(target, key, value, receiver)
+      }
+    },
+  })
+}
