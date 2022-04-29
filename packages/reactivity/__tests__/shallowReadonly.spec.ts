@@ -15,9 +15,7 @@ describe('reactivity/readonly', () => {
     observed.foo = 2
     expect(observed.foo).toBe(1)
     expect(warnSpy).toBeCalled()
-    expect(warnSpy.mock.lastCall?.[0]).toMatch(
-      'Set operation on key "foo" failed: target is readonly.',
-    )
+    expect(warnSpy).toBeCalledWith('Set operation on key "foo" failed: target is readonly.')
     vi.restoreAllMocks()
   })
 
