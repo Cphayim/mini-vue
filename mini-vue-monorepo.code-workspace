@@ -9,6 +9,10 @@
       "path": "packages/reactivity"
     },
     {
+      "name": "📦 @cphayim/vue-runtime-core",
+      "path": "packages/runtime-core"
+    },
+    {
       "name": "📦 @cphayim/vue-shared",
       "path": "packages/shared"
     }

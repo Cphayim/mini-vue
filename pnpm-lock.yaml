@@ -9,6 +9,7 @@ importers:
       '@ombro/eslint-config-typescript': ^0.1.0
       '@ombro/logger': ^1.5.5
       '@ombro/ts-config': ^1.4.0
+      '@rollup/plugin-typescript': ^8.3.2
       '@types/node': ^17.0.23
       c8: ^7.11.2
       commitizen: ^4.2.4
@@ -18,6 +19,8 @@ importers:
       lint-staged: ^11.2.6
       prettier: ^2.6.1
       rimraf: ^3.0.2
+      rollup: ^2.71.1
+      tslib: ^2.4.0
       typescript: ^4.6.3
       vitest: ^0.10.0
     devDependencies:
@@ -26,6 +29,7 @@ importers:
       '@ombro/eslint-config-typescript': 0.1.0_bef8593f25977014d33acd900a6eae2b
       '@ombro/logger': 1.5.5
       '@ombro/ts-config': 1.4.0
+      '@rollup/plugin-typescript': 8.3.2_f12bfae5846b9b4c5cdd599213863977
       '@types/node': 17.0.26
       c8: 7.11.2
       commitizen: 4.2.4
@@ -35,6 +39,8 @@ importers:
       lint-staged: 11.2.6
       prettier: 2.6.2
       rimraf: 3.0.2
+      rollup: 2.71.1
+      tslib: 2.4.0
       typescript: 4.6.3
       vitest: 0.10.0_c8@7.11.2
 
@@ -391,6 +397,33 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
+  /@rollup/plugin-typescript/8.3.2_f12bfae5846b9b4c5cdd599213863977:
+    resolution: {integrity: sha512-MtgyR5LNHZr3GyN0tM7gNO9D0CS+Y+vflS4v/PHmrX17JCkHUYKvQ5jN5o3cz1YKllM3duXUqu3yOHwMPUxhDg==}
+    engines: {node: '>=8.0.0'}
+    peerDependencies:
+      rollup: ^2.14.0
+      tslib: '*'
+      typescript: '>=3.7.0'
+    dependencies:
+      '@rollup/pluginutils': 3.1.0_rollup@2.71.1
+      resolve: 1.22.0
+      rollup: 2.71.1
+      tslib: 2.4.0
+      typescript: 4.6.3
+    dev: true
+
+  /@rollup/pluginutils/3.1.0_rollup@2.71.1:
+    resolution: {integrity: sha512-GksZ6pr6TpIjHm8h9lSQ8pi8BE9VeubNT0OMJ3B5uZJ8pz73NPiqOtCog/x2/QzM1ENChPKxMDhiQuRHsqc+lg==}
+    engines: {node: '>= 8.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0
+    dependencies:
+      '@types/estree': 0.0.39
+      estree-walker: 1.0.1
+      picomatch: 2.3.1
+      rollup: 2.71.1
+    dev: true
+
   /@tsconfig/node10/1.0.8:
     resolution: {integrity: sha512-6XFfSQmMgq0CFLY1MslA/CPUfhIL919M1rMsa5lP2P097N2Wd1sSX0tx1u4olM16fLNhtHZpRhedZJphNJqmZg==}
     dev: true
@@ -423,6 +456,10 @@ packages:
 
   /@types/dedent/0.7.0:
     resolution: {integrity: sha512-EGlKlgMhnLt/cM4DbUSafFdrkeJoC9Mvnj0PUCU7tFmTjMjNRT957kXCx0wYm3JuEq4o4ZsS5vG+NlkM2DMd2A==}
+    dev: true
+
+  /@types/estree/0.0.39:
+    resolution: {integrity: sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==}
     dev: true
 
   /@types/figlet/1.5.4:
@@ -1550,6 +1587,10 @@ packages:
   /estraverse/5.3.0:
     resolution: {integrity: sha512-MMdARuVEQziNTeJD8DgMqmhwR11BRQ/cBP+pLtYdSTnf3MIO8fFeiINEbX36ZdNlfU/7A9f3gUw49B3oQsvwBA==}
     engines: {node: '>=4.0'}
+    dev: true
+
+  /estree-walker/1.0.1:
+    resolution: {integrity: sha512-1fMXF3YP4pZZVozF8j/ZLfvnR8NSIljt56UhbZ5PeeDmmGHpgpdwQt7ITlGvYaQukCvuBRMLEiKiYC+oeIg4cg==}
     dev: true
 
   /esutils/2.0.3:
@@ -2712,8 +2753,8 @@ packages:
       glob: 7.2.0
     dev: true
 
-  /rollup/2.70.2:
-    resolution: {integrity: sha512-EitogNZnfku65I1DD5Mxe8JYRUCy0hkK5X84IlDtUs+O6JRMpRciXTzyCUuX11b5L5pvjH+OmFXiQ3XjabcXgg==}
+  /rollup/2.71.1:
+    resolution: {integrity: sha512-lMZk3XfUBGjrrZQpvPSoXcZSfKcJ2Bgn+Z0L1MoW2V8Wh7BVM+LOBJTPo16yul2MwL59cXedzW1ruq3rCjSRgw==}
     engines: {node: '>=10.0.0'}
     hasBin: true
     optionalDependencies:
@@ -3183,7 +3224,7 @@ packages:
       esbuild: 0.14.38
       postcss: 8.4.12
       resolve: 1.22.0
-      rollup: 2.70.2
+      rollup: 2.71.1
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
