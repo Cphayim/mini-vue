@@ -5,7 +5,10 @@ export const App = {
   // <template></template>
   // render
   render() {
-    return h('div', `Hello, ${this.msg}!`)
+    return h('div', { id: 'root', class: ['header', 'bg-blue'] }, [
+      h('span', { class: ['red'] }, 'Hello, '),
+      h('span', { class: ['blue'] }, 'mini-vue!'),
+    ])
   },
   setup() {
     // composition api
