@@ -1,5 +1,4 @@
-import { isFunction, isObject, isString } from '@cphayim/vue-shared'
-import { ShapeFlags } from 'packages/shared/src/shapeFlags'
+import { isFunction, isObject, isString, ShapeFlags } from '@cphayim/vue-shared'
 
 export function createVNode(type: any, props?: any, children?: any) {
   // 记录 vnode 的 shapeFlag

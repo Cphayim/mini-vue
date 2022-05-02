@@ -1,5 +1,4 @@
-import { isArray } from '@cphayim/vue-shared'
-import { ShapeFlags } from 'packages/shared/src/shapeFlags'
+import { isArray, ShapeFlags } from '@cphayim/vue-shared'
 import { createComponentInstance, setupComponent } from './component'
 
 export function render(vnode: any, container: any) {
