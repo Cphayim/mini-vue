@@ -1,4 +1,6 @@
+import { shallowReadonly } from '@cphayim/vue-reactivity'
 import { isObject } from '@cphayim/vue-shared'
+import { initProps } from './componentProps'
 import { publicInstanceProxyHandlers } from './componentPublicInstance'
 
 /**
@@ -12,6 +14,7 @@ export function createComponentInstance(vnode: any) {
     proxy: null, // 组件代理对象
     setupState: {}, // setup 返回的状态
     render: null, // 渲染函数
+    props: {},
   }
   return component
 }
@@ -20,9 +23,9 @@ export function createComponentInstance(vnode: any) {
  * 初始化组件
  */
 export function setupComponent(instance: any) {
-  // TODO
-  // initProps
-  // initSlots
+  // 初始化 props
+  initProps(instance, instance.vnode.props)
+  // TODO initSlots
 
   // 初始化有状态组件
   setupStatefulComponent(instance)
@@ -39,8 +42,7 @@ function setupStatefulComponent(instance: any) {
   const Component = instance.type
   const { setup } = Component
   if (setup) {
-    // object or function
-    const setupResult = setup()
+    const setupResult = setup(shallowReadonly(instance.props))
     handleSetupResult(instance, setupResult)
   }
 }
