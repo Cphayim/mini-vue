@@ -1,9 +1,7 @@
-import { hasChanged, isArray } from '@cphayim/vue-shared'
-import { IfAny } from 'packages/shared/src/typeUtils'
-import { isProxy } from 'util/types'
+import { hasChanged, IfAny, isArray } from '@cphayim/vue-shared'
 import { createDep, Dep } from './dep'
 import { trackEffect, triggerEffect } from './effect'
-import { toReactive } from './reactive'
+import { isProxy, toReactive } from './reactive'
 
 export interface Ref<T = any> {
   value: T
