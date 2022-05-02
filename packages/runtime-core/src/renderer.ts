@@ -1,4 +1,5 @@
-import { isArray, isObject, isString } from '@cphayim/vue-shared'
+import { isArray } from '@cphayim/vue-shared'
+import { ShapeFlags } from 'packages/shared/src/shapeFlags'
 import { createComponentInstance, setupComponent } from './component'
 
 export function render(vnode: any, container: any) {
@@ -7,11 +8,14 @@ export function render(vnode: any, container: any) {
 }
 
 function patch(vnode: any, container: any) {
-  // 判断 vnode 的类型
-  if (isString(vnode.type)) {
+  const { shapeFlag } = vnode
+  // 通过 shapeFlag 判断是元素还是组件
+  // 例如 0b1001 & 0b1 = 0b1 -> 这个节点是元素
+  // 0b1000 & 0b1 = 0b0 -> 这个节点不是元素
+  if (shapeFlag & ShapeFlags.ELEMENT) {
     // 处理元素
     processElement(vnode, container)
-  } else if (isObject(vnode.type)) {
+  } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
     // 处理组件
     processComponent(vnode, container)
   }
@@ -21,29 +25,32 @@ function patch(vnode: any, container: any) {
 function processElement(vnode: any, container: any) {
   // 分为 init 和 update
   mountElement(vnode, container)
+  // TODO update
 }
 
+// 挂载元素
 function mountElement(vnode: any, container: any) {
-  const { type, props, children } = vnode
-  // 创建对应标签的元素
+  const { type, props, children, shapeFlag } = vnode
+  // 1.创建对应标签的元素
   const el = (vnode.el = document.createElement(type))
-  // 添加属性
-  for (const key in props) {
-    const value = props[key]
-    el.setAttribute(key, isArray(value) ? value.join(' ') : value)
-  }
 
-  // 添加 children
-  // 两种情况，string 和 array
-  if (isString(children)) {
-    // 文本节点直接赋值
+  // 2.添加 children
+  if (shapeFlag & ShapeFlags.TEXT_CHILDREN) {
     el.textContent = children
-  } else {
+  } else if (shapeFlag & ShapeFlags.ARRAY_CHILDREN) {
     // 创建并挂载所有 children
     mountChildren(children, el)
   }
 
-  // 挂载元素
+  // 3.添加属性
+  if (props) {
+    for (const key in props) {
+      const value = props[key]
+      el.setAttribute(key, isArray(value) ? value.join(' ') : value)
+    }
+  }
+
+  // 4.挂载元素
   container.append(el)
 }
 

@@ -10,7 +10,6 @@ export function createComponentInstance(vnode: any) {
     vnode, // 组件虚拟节点
     type: vnode.type,
     proxy: null, // 组件代理对象
-    el: null, // 组件根元素
     setupState: {}, // setup 返回的状态
     render: null, // 渲染函数
   }
