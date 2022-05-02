@@ -26,8 +26,7 @@ function processElement(vnode: any, container: any) {
 function mountElement(vnode: any, container: any) {
   const { type, props, children } = vnode
   // 创建对应标签的元素
-  const el = document.createElement(type)
-  console.log(props)
+  const el = (vnode.el = document.createElement(type))
   // 添加属性
   for (const key in props) {
     const value = props[key]
@@ -61,20 +60,24 @@ function processComponent(vnode: any, container: any) {
   mountComponent(vnode, container)
 }
 
-function mountComponent(vnode: any, container: any) {
+function mountComponent(initialVNode: any, container: any) {
   // 创建组件实例
-  const instance = createComponentInstance(vnode)
+  const instance = createComponentInstance(initialVNode)
 
   setupComponent(instance)
-
-  setupRenderEffect(instance, container)
+  setupRenderEffect(instance, initialVNode, container)
 }
 
-function setupRenderEffect(instance: any, container: any) {
-  // 虚拟节点树
-  const subTree = instance.render()
+function setupRenderEffect(instance: any, initialVNode: any, container: any) {
+  // 执行 render() 获取虚拟节点树, 将组件代理对象绑定到 this
+  const { proxy } = instance
+  const subTree = instance.render.call(proxy)
 
+  // 递归调用 patch 处理 subTree
   // vnode -> patch
   // vnode -> element -> mountElement
   patch(subTree, container)
+
+  // 将根元素（可能根节点是组件，那就是它的根元素）的 el 赋值给当前组件节点的 el
+  initialVNode.el = subTree.el
 }
