@@ -42,11 +42,21 @@ function mountElement(vnode: any, container: any) {
     mountChildren(children, el)
   }
 
-  // 3.添加属性
+  // 3.添加属性和事件
   if (props) {
     for (const key in props) {
       const value = props[key]
-      el.setAttribute(key, isArray(value) ? value.join(' ') : value)
+
+      const isOn = (key: string) => /^on[A-Z]/.test(key)
+
+      if (isOn(key)) {
+        const eventName = key.slice(2).toLowerCase()
+        // 事件
+        el.addEventListener(eventName, value)
+      } else {
+        // 属性
+        el.setAttribute(key, isArray(value) ? value.join(' ') : value)
+      }
     }
   }
 

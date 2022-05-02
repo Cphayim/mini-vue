@@ -8,10 +8,20 @@ export const App = {
   // render
   render() {
     window.self = this
-    return h('div', { id: 'root', class: ['header', 'bg-blue'] }, [
-      h('span', { class: ['red'] }, 'Hello, '),
-      h('span', { class: ['blue'] }, `${this.msg}!`),
-    ])
+    return h(
+      'div',
+      {
+        id: 'root',
+        class: ['header', 'bg-blue'],
+        onClick() {
+          console.log('click')
+        },
+        onMouseEnter() {
+          console.log('enter')
+        },
+      },
+      [h('span', { class: ['red'] }, 'Hello, '), h('span', { class: ['blue'] }, `${this.msg}!`)],
+    )
   },
   setup() {
     // composition api
