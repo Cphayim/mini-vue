@@ -1,5 +1,6 @@
 import { shallowReadonly } from '@cphayim/vue-reactivity'
 import { isObject } from '@cphayim/vue-shared'
+import { emit } from './componentEmit'
 import { initProps } from './componentProps'
 import { publicInstanceProxyHandlers } from './componentPublicInstance'
 
@@ -8,14 +9,16 @@ import { publicInstanceProxyHandlers } from './componentPublicInstance'
  */
 export function createComponentInstance(vnode: any) {
   // 组件实例，存储了一些组件上必要的属性
-  const component = {
+  const component: any = {
     vnode, // 组件虚拟节点
     type: vnode.type,
     proxy: null, // 组件代理对象
     setupState: {}, // setup 返回的状态
     render: null, // 渲染函数
     props: {},
+    emit: () => void 0,
   }
+  component.emit = emit.bind(null, component)
   return component
 }
 
@@ -42,7 +45,9 @@ function setupStatefulComponent(instance: any) {
   const Component = instance.type
   const { setup } = Component
   if (setup) {
-    const setupResult = setup(shallowReadonly(instance.props))
+    const setupResult = setup(shallowReadonly(instance.props), {
+      emit: instance.emit,
+    })
     handleSetupResult(instance, setupResult)
   }
 }

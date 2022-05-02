@@ -16,13 +16,21 @@ export const App = {
         id: 'root',
         class: ['header', 'bg-blue'],
         onClick() {
-          console.log('click')
+          // console.log('click')
         },
         onMouseEnter() {
-          console.log('enter')
+          // console.log('enter')
         },
       },
-      [h('div', { class: ['red'] }, `Hello, ${this.msg}`), h(Foo, { count: 1 })],
+      [
+        h('div', { class: ['red'] }, `Hello, ${this.msg}`),
+        h(Foo, {
+          count: 1,
+          onAddFoo(a, b, c) {
+            console.log('onAddFoo', a, b, c)
+          },
+        }),
+      ],
     )
   },
   setup() {
