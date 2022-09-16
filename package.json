@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "author": "cphayim",
   "license": "MIT",
-  "packageManager": "pnpm@6.28.0",
+  "packageManager": "pnpm@7.9.5",
   "scripts": {
     "preinstall": "npx only-allow pnpm -y",
     "prepare": "husky install",
@@ -32,24 +32,24 @@
     ]
   },
   "devDependencies": {
-    "@commitlint/cli": "^12.1.4",
-    "@commitlint/config-conventional": "^12.1.4",
-    "@ombro/eslint-config-typescript": "^0.1.0",
+    "@commitlint/cli": "^17.1.0",
+    "@commitlint/config-conventional": "^17.1.0",
+    "@ombro/eslint-config-typescript": "^0.1.2",
     "@ombro/logger": "^1.5.5",
-    "@ombro/ts-config": "^1.4.0",
-    "@rollup/plugin-typescript": "^8.3.2",
-    "@types/node": "^17.0.23",
-    "c8": "^7.11.2",
-    "commitizen": "^4.2.4",
+    "@ombro/ts-config": "^1.4.2",
+    "@rollup/plugin-typescript": "^8.5.0",
+    "@types/node": "^18.7.18",
+    "@vitest/coverage-c8": "^0.23.2",
+    "commitizen": "^4.2.5",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^8.12.0",
-    "husky": "^6.0.0",
-    "lint-staged": "^11.2.6",
-    "prettier": "^2.6.1",
+    "eslint": "^8.23.1",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
-    "rollup": "^2.71.1",
+    "rollup": "^2.79.0",
     "tslib": "^2.4.0",
-    "typescript": "^4.6.3",
-    "vitest": "^0.10.0"
+    "typescript": "^4.8.3",
+    "vitest": "^0.23.2"
   }
 }
